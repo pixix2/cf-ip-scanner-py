@@ -311,8 +311,8 @@ def startTest(stdscr: curses.window, ip_list: Pattern[AnyStr], config: configpar
         try:
             # Calculate ping of selected ip using related function
             ping = getPing(ip, max_ping)
-            # Ignore the IP if ping dosn't match the maximum required ping
-            if ping > max_ping:
+            # Ignore the IP if ping is invalid or does not match the maximum required ping
+            if ping <= 0 or ping > max_ping:
                 continue
 
             str = f"Ping: {ping}ms"
@@ -352,7 +352,7 @@ def startTest(stdscr: curses.window, ip_list: Pattern[AnyStr], config: configpar
                 stdscr.addstr(1, col, str)
                 stdscr.refresh()
 
-            if download_speed > 0:
+            if min_download_speed > 0:
                 # Calculate download speed of selected ip using related function
                 download_speed = getDownloadSpeed(ip, test_size, min_download_speed)
                 # Ignore the IP if download speed dosn't match the minimum required speed
